@@ -1,73 +1,110 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# API - Pet & Events Management
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Descrição
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Esta API foi construída utilizando NestJS e TypeORM, com PostgreSQL como banco de dados, e JWT para autenticação e autorização. A API permite que os usuários:
 
-## Description
+- Criem e gerenciem perfis com endereço.
+- Adicionem e gerenciem pets, incluindo criação, atualização, visualização e remoção.
+- Criem e gerenciem eventos, permitindo adicionar participantes e fazer upload de fotos.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Funcionalidades
 
-## Installation
+### Usuário
 
-```bash
-$ npm install
-```
+- **Propriedades**: `id`, `email`, `isActive`, `createdAt`, `address`, `pets`, `events`.
+- **Rotas**:
+  - **POST** `/users`: Cria um novo usuário.
+  - **GET** `/users`: Lista todos os usuários.
+  - **GET** `/users/profile`: Visualiza o perfil do usuário autenticado.
+  - **GET** `/users/:id`: Exibe os detalhes de um usuário específico.
+  - **PATCH** `/users/:id`: Atualiza os dados de um usuário.
+  - **DELETE** `/users/:id`: Realiza uma exclusão lógica do usuário.
 
-## Running the app
+### Pets
 
-```bash
-# development
-$ npm run start
+- **Propriedades**: `id`, `nome`, `idade`, `raça`, `dono`.
+- **Rotas**:
+  - **POST** `/pets`: Cria um novo pet (usuário autenticado).
+  - **GET** `/pets`: Lista todos os pets (com filtro opcional por raça).
+  - **GET** `/pets/my-pets`: Lista os pets do usuário autenticado.
+  - **GET** `/pets/:id`: Exibe os detalhes de um pet específico.
+  - **PATCH** `/pets/:id`: Atualiza um pet existente (somente para o dono).
+  - **DELETE** `/pets/:id`: Remove um pet (somente para o dono).
 
-# watch mode
-$ npm run start:dev
+### Eventos
 
-# production mode
-$ npm run start:prod
-```
+- **Propriedades**: `id`, `nome`, `data`, `participantes`, `foto`.
+- **Rotas**:
+  - **POST** `/events`: Cria um novo evento.
+  - **GET** `/events`: Lista todos os eventos.
+  - **POST** `/events/:id/participate`: Adiciona um participante a um evento.
+  - **POST** `/events/:id/upload-photo`: Faz upload de uma foto para o evento.
+  - **GET** `/events/photo/:filename`: Obtém uma foto do evento pelo nome do arquivo.
+  - **GET** `/events/:id`: Exibe os detalhes de um evento específico.
+  - **PATCH** `/events/:id`: Atualiza um evento existente.
+  - **DELETE** `/events/:id`: Remove um evento.
 
-## Test
+### Endereços
 
-```bash
-# unit tests
-$ npm run test
+- **Propriedades**: `id`, `rua`, `cidade`, `estado`, `cep`, `país`.
+- **Rotas**:
+  - **POST** `/address`: Adiciona um novo endereço ao perfil do usuário.
+  - **GET** `/address`: Lista todos os endereços do usuário autenticado.
+  - **GET** `/address/:id`: Exibe os detalhes de um endereço específico.
+  - **PATCH** `/address/:id`: Atualiza um endereço existente.
+  - **DELETE** `/address/:id`: Remove um endereço.
 
-# e2e tests
-$ npm run test:e2e
+## Autenticação
 
-# test coverage
-$ npm run test:cov
-```
+- **POST** `/auth/login`: Autentica um usuário e retorna o token JWT.
 
-## Support
+## Tecnologias Utilizadas
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Dependências
+- **NestJS** (Core e diversos módulos como `@nestjs/jwt`, `@nestjs/typeorm`, etc.)
+- **TypeORM**: ORM para o banco de dados.
+- **PostgreSQL**: Banco de dados relacional.
+- **bcrypt**: Para hashing de senhas.
+- **class-validator** e **class-transformer**: Para validação e transformação de dados.
+- **multer**: Upload de arquivos (imagens).
+- **pg**: Cliente PostgreSQL.
 
-## Stay in touch
+### Dev Dependencies
+- **TypeScript**: Para tipagem estática e desenvolvimento.
+- **ESLint** e **Prettier**: Para padronização e formatação de código.
+- **Jest** e **Supertest**: Para testes unitários e de integração.
+- **ts-jest**: Para suporte a testes com TypeScript.
+- **ts-loader**, **ts-node**, **tsconfig-paths**: Para transpilar e rodar o código TypeScript.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Como rodar a aplicação
 
-## License
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/dev-anderson-rodrigues/api-users-demo.git
+   ```
 
-Nest is [MIT licensed](LICENSE).
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+
+3. Crie um arquivo `.env` com as variáveis de ambiente necessárias, como:
+   ```bash
+   DATABASE_URL=postgres://user:password@localhost:5432/yourdb
+   JWT_SECRET=your_jwt_secret
+   ```
+
+4. Rodar migrações do banco de dados:
+   ```bash
+   npm run typeorm migration:run
+   ```
+
+5. Inicie o servidor:
+   ```bash
+   npm run start
+   ```
+
+## Documentação da API
+
+A documentação da API pode ser acessada via Swagger, disponível em `/api`.
